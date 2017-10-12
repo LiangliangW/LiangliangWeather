@@ -101,13 +101,14 @@
             android:id="@+id/weather_now"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="10dp"
             android:padding="10dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginLeft="10dp">
 
                 <TextView
                     android:id="@+id/time"
@@ -118,7 +119,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="5dp"
                     android:maxLines="1"
-                    android:text="实时：12:00发布"
+                    android:text="12:00发布"
                     android:textSize="20sp"
                     android:textColor="@android:color/white"/>
 
@@ -127,25 +128,24 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
+                    android:layout_marginTop="5dp"
                     android:layout_below="@id/time"
                     android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
                     android:maxLines="1"
-                    android:text="25℃ · 晴"
-                    android:textSize="40sp"
+                    android:text="25℃"
+                    android:textSize="50sp"
                     android:textColor="@android:color/white"/>
 
                 <!--<TextView-->
-                    <!--android:id="@+id/type_now"-->
+                    <!--android:id="@+id/climate_now"-->
                     <!--android:layout_width="wrap_content"-->
                     <!--android:layout_height="wrap_content"-->
                     <!--android:layout_alignParentLeft="true"-->
                     <!--android:layout_below="@id/time"-->
                     <!--android:layout_gravity="center"-->
-                    <!--android:layout_marginTop="10dp"-->
                     <!--android:maxLines="1"-->
                     <!--android:text="晴"-->
-                    <!--android:textSize="40sp"-->
+                    <!--android:textSize="20sp"-->
                     <!--android:textColor="@android:color/white"/>-->
             </LinearLayout>
 
@@ -164,7 +164,7 @@
                     android:orientation="horizontal"
                     android:paddingBottom="6dp"
                     android:paddingLeft="12dp"
-                    android:paddingRight="12dp"
+                    android:paddingRight="18dp"
                     android:paddingTop="6dp">
 
                     <LinearLayout
@@ -208,7 +208,7 @@
                         android:id="@+id/pm25_pic"
                         android:layout_width="61dp"
                         android:layout_height="94dp"
-                        android:src="@drawable/biz_plugin_weather_0_50"/>
+                        android:src="@drawable/biz_plugin_weather_101_150"/>
 
                 </LinearLayout>
             </LinearLayout>
@@ -224,7 +224,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_marginLeft="40dp"
+                android:layout_marginLeft="20dp"
                 android:src="@drawable/biz_plugin_weather_qing" />
 
             <LinearLayout
@@ -232,7 +232,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="20dp"
+                android:layout_marginRight="30dp"
                 android:layout_marginTop="10dp"
                 android:orientation="vertical">
 
@@ -246,7 +246,7 @@
                     android:textColor="@android:color/white"/>
 
                 <TextView
-                    android:id="@+id/temperature_range"
+                    android:id="@+id/temperature_today"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -254,23 +254,28 @@
                     android:textSize="30sp"
                     android:textColor="@android:color/white" />
 
-                <TextView
-                    android:id="@+id/type_today"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="多云转晴 · 微风"
-                    android:textSize="20sp"
-                    android:textColor="@android:color/white" />
+                    android:layout_gravity="center">
 
-                <!--<TextView-->
-                    <!--android:id="@+id/wind"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_gravity="center"-->
-                    <!--android:text="微风"-->
-                    <!--android:textSize="20sp"-->
-                    <!--android:textColor="@android:color/white" />-->
+                    <TextView
+                        android:id="@+id/climate_today"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="多云转晴 · "
+                        android:textSize="20sp"
+                        android:textColor="@android:color/white" />
+
+                    <TextView
+                        android:id="@+id/wind_today"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="微风"
+                        android:textSize="20sp"
+                        android:textColor="@android:color/white" />
+
+                </LinearLayout>
             </LinearLayout>
 
         </RelativeLayout>

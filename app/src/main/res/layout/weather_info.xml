@@ -20,7 +20,7 @@
             android:src="@drawable/title_city"/>
 
         <ImageView
-            android:id="@+id/citySeperator1"
+            android:id="@+id/title_Seperator1"
             android:layout_width="1.0dip"
             android:layout_height="40.0dip"
             android:layout_marginTop="2.0dip"
@@ -31,7 +31,7 @@
             android:id="@+id/title_cityName"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_toRightOf="@id/citySeperator1"
+            android:layout_toRightOf="@id/title_Seperator1"
             android:gravity="center_vertical"
             android:paddingLeft="5dip"
             android:text="北京"
@@ -48,7 +48,7 @@
             android:visibility="visible"/>
 
         <ImageView
-            android:id="@+id/citySeperator2"
+            android:id="@+id/title_Seperator2"
             android:layout_width="1.0dip"
             android:layout_height="40.0dip"
             android:layout_marginTop="2.0dip"
@@ -63,7 +63,7 @@
             android:src="@drawable/title_share"/>
 
         <ImageView
-            android:id="@+id/citySeperator3"
+            android:id="@+id/title_Seperator3"
             android:layout_width="1.0dip"
             android:layout_height="40.0dip"
             android:layout_marginTop="2.0dip"
@@ -78,7 +78,7 @@
             android:src="@drawable/base_action_bar_action_city"/>
 
         <ImageView
-            android:id="@+id/citySeperator4"
+            android:id="@+id/title_Seperator4"
             android:layout_width="1.0dip"
             android:layout_height="40.0dip"
             android:layout_marginTop="2.0dip"

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="45.0dp"
+        android:background="#42a2ec"
+        android:gravity="center_vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <ImageView
+            android:id="@+id/city_back"
+            android:layout_width="45.0dp"
+            android:layout_height="45.0dp"
+            android:src="@drawable/base_action_bar_back_normal"/>
+
+        <ImageView
+            android:id="@+id/city_Seperator"
+            android:layout_width="1.0dip"
+            android:layout_height="40.0dip"
+            android:layout_marginTop="2.0dip"
+            android:layout_toRightOf="@id/city_back"
+            android:background="#22257c"/>
+
+        <TextView
+            android:id="@+id/city_now"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/city_Seperator"
+            android:gravity="center_vertical"
+            android:paddingLeft="5dip"
+            android:text="当前城市：北京"
+            android:textColor="#FFFFFF"
+            android:textSize="22.0sp"/>
+
+    </RelativeLayout>
+</RelativeLayout>

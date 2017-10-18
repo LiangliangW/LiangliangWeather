@@ -2,6 +2,7 @@ package cn.edu.pku.wulingliang.miniweather;
 
 import android.app.Activity;
 import android.app.Notification;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -38,6 +39,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
     private static final int UPDATE_TODAY_WEATHER = 1;
     private ImageView mUpdateBtn;
+    private ImageView mCitySelectBtn;
     private TextView timeTv, weekTv, pm25Tv, pmQualityTv, temperatureTv, temperatureTodayTv, climateTv, windTv, cityNameTv;
     private ImageView weatherImage, pmImage;
 
@@ -60,6 +62,8 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
         mUpdateBtn = (ImageView)findViewById(R.id.title_updateBtn);
         mUpdateBtn.setOnClickListener(this);
+        mCitySelectBtn = (ImageView)findViewById(R.id.title_cityManager);
+        mCitySelectBtn.setOnClickListener(this);
 
         if (NetUtil.getNetworkState(this) != NetUtil.NETWORK_NONE) {
             Log.d("llWeather_netConnection", "Yes");
@@ -98,6 +102,12 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
     @Override
     public void onClick(View view) {
+        if (view.getId() == R.id.title_cityManager) {
+            Intent i = new Intent(this, SelectCity.class);
+//            startActivity(i);
+            startActivityForResult(i, 1);
+        }
+
         if (view.getId() == R.id.title_updateBtn) {
             SharedPreferences sharedPreferences = getSharedPreferences("config", MODE_PRIVATE);
             String cityCode = sharedPreferences.getString("main_city_code", "101010100");
@@ -108,6 +118,21 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 queryWeatherCode(cityCode);
             } else {
                 Log.d("llWeather_clickNet", "No");
+                Toast.makeText(MainActivity.this, "Network unavalible", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            String newCityCode = data.getStringExtra("cityCode");
+            Log.d("llWeather_cityCode", newCityCode);
+
+            if (NetUtil.getNetworkState(this) != NetUtil.NETWORK_NONE) {
+                Log.d("llWeather_netConnection", "Yes");
+                queryWeatherCode(newCityCode);
+            } else {
+                Log.d("llWeather_netConnection", "No");
                 Toast.makeText(MainActivity.this, "Network unavalible", Toast.LENGTH_LONG).show();
             }
         }

@@ -66,6 +66,9 @@ public class MainActivity extends Activity implements View.OnClickListener{
         mCitySelectBtn.setOnClickListener(this);
 
         if (NetUtil.getNetworkState(this) != NetUtil.NETWORK_NONE) {
+            SharedPreferences sharedPreferences = getSharedPreferences("config", MODE_PRIVATE);
+            String cityCode = sharedPreferences.getString("main_city_code", "101010100");
+            queryWeatherCode(cityCode);
             Log.d("llWeather_netConnection", "Yes");
             Toast.makeText(MainActivity.this, "Network connected", Toast.LENGTH_LONG).show();
         } else {
@@ -131,6 +134,11 @@ public class MainActivity extends Activity implements View.OnClickListener{
             if (NetUtil.getNetworkState(this) != NetUtil.NETWORK_NONE) {
                 Log.d("llWeather_netConnection", "Yes");
                 queryWeatherCode(newCityCode);
+
+                SharedPreferences settings = getSharedPreferences("config", MODE_PRIVATE);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putString("main_city_code", newCityCode);
+                editor.commit();
             } else {
                 Log.d("llWeather_netConnection", "No");
                 Toast.makeText(MainActivity.this, "Network unavalible", Toast.LENGTH_LONG).show();

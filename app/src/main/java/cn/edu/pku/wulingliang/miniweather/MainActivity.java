@@ -97,7 +97,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
 
         initView();
-        getLoc();
+//        getLoc();
     }
 
     void initView() {
@@ -132,9 +132,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
             startActivityForResult(i, 1);
         }
 
-        if (view.getId() == R.id.title_location) {
-            getLoc();
-        }
+//        if (view.getId() == R.id.title_location) {
+//            getLoc();
+//        }
 
         if (view.getId() == R.id.title_updateBtn) {
             SharedPreferences sharedPreferences = getSharedPreferences("config", MODE_PRIVATE);
@@ -408,69 +408,69 @@ public class MainActivity extends Activity implements View.OnClickListener {
         Toast.makeText(MainActivity.this, "更新成功", Toast.LENGTH_LONG).show();
     }
 
-    private void getLoc() {
-
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-
-        Criteria criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_FINE);
-        criteria.setAltitudeRequired(false);
-        criteria.setBearingRequired(false);
-        criteria.setCostAllowed(true);
-        criteria.setPowerRequirement(Criteria.POWER_LOW);
-        String provider = locationManager.getBestProvider(criteria, false);
-        Log.d("llWeather_LocProvider", provider);
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-
-            if (provider == null || provider.equals("")) {
-                startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-            }
-
-            Location location = locationManager.getLastKnownLocation(provider);
-            if (location == null) {
-                locationManager.requestLocationUpdates(provider, 0, 0,
-                        locationListener);
-            }
-            updateLoc(location);
-        }
-    }
-
-    private final LocationListener locationListener = new LocationListener() {
-        @Override
-        public void onLocationChanged(Location location) {
-            updateLoc(location);
-        }
-
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-        }
-
-        @Override
-        public void onProviderEnabled(String provider) {
-            Log.d("llWeather_LocInfo", "Provider now is enabled");
-        }
-
-        @Override
-        public void onProviderDisabled(String provider) {
-            updateLoc(null);
-            Log.d("llWeather_LocInfo", "Provider now is disabled");
-        }
-    };
-
-    private void updateLoc(Location location) {
-        String latLng;
-        if (location != null) {
-            double lat = location.getLatitude();
-            double lng = location.getLongitude();
-            latLng = "Latitude:" + lat + "  Longitude:" + lng;
-        } else {
-            latLng = "Can't access your location";
-        }
-
-        Log.d("llWeather_LocLatLng", latLng);
-    }
+//    private void getLoc() {
+//
+//        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+//
+//        Criteria criteria = new Criteria();
+//        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+//        criteria.setAltitudeRequired(false);
+//        criteria.setBearingRequired(false);
+//        criteria.setCostAllowed(true);
+//        criteria.setPowerRequirement(Criteria.POWER_LOW);
+//        String provider = locationManager.getBestProvider(criteria, false);
+//        Log.d("llWeather_LocProvider", provider);
+//
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+//                == PackageManager.PERMISSION_GRANTED
+//                || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+//                == PackageManager.PERMISSION_GRANTED) {
+//
+//            if (provider == null || provider.equals("")) {
+//                startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+//            }
+//
+//            Location location = locationManager.getLastKnownLocation(provider);
+//            if (location == null) {
+//                locationManager.requestLocationUpdates(provider, 0, 0,
+//                        locationListener);
+//            }
+//            updateLoc(location);
+//        }
+//    }
+//
+//    private final LocationListener locationListener = new LocationListener() {
+//        @Override
+//        public void onLocationChanged(Location location) {
+//            updateLoc(location);
+//        }
+//
+//        @Override
+//        public void onStatusChanged(String provider, int status, Bundle extras) {
+//        }
+//
+//        @Override
+//        public void onProviderEnabled(String provider) {
+//            Log.d("llWeather_LocInfo", "Provider now is enabled");
+//        }
+//
+//        @Override
+//        public void onProviderDisabled(String provider) {
+//            updateLoc(null);
+//            Log.d("llWeather_LocInfo", "Provider now is disabled");
+//        }
+//    };
+//
+//    private void updateLoc(Location location) {
+//        String latLng;
+//        if (location != null) {
+//            double lat = location.getLatitude();
+//            double lng = location.getLongitude();
+//            latLng = "Latitude:" + lat + "  Longitude:" + lng;
+//        } else {
+//            latLng = "Can't access your location";
+//        }
+//
+//        Log.d("llWeather_LocLatLng", latLng);
+//    }
 }

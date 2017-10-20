@@ -17,7 +17,7 @@
             android:id="@+id/title_cityManager"
             android:layout_width="45.0dp"
             android:layout_height="45.0dp"
-            android:src="@drawable/title_city"/>
+            android:src="@drawable/title_city_selector"/>
 
         <ImageView
             android:id="@+id/title_Seperator1"
@@ -44,7 +44,7 @@
             android:layout_height="45.0dp"
             android:layout_alignParentRight="true"
             android:gravity="center_vertical"
-            android:src="@drawable/title_update"
+            android:src="@drawable/title_refresh_selector"
             android:visibility="visible"/>
 
         <ImageView
@@ -60,7 +60,7 @@
             android:layout_width="45.0dp"
             android:layout_height="45.0dp"
             android:layout_toLeftOf="@+id/title_updateBtn"
-            android:src="@drawable/title_share"/>
+            android:src="@drawable/title_share_selector"/>
 
         <ImageView
             android:id="@+id/title_Seperator3"
@@ -75,7 +75,7 @@
             android:layout_width="45.0dp"
             android:layout_height="45.0dp"
             android:layout_toLeftOf="@+id/title_share"
-            android:src="@drawable/base_action_bar_action_city"/>
+            android:src="@drawable/title_loc_selector"/>
 
         <ImageView
             android:id="@+id/title_Seperator4"

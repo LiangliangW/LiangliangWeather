@@ -1,15 +1,27 @@
 package cn.edu.pku.wulingliang.miniweather;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Notification;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.ContactsContract;
+import android.provider.Settings;
 import android.support.annotation.DrawableRes;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -35,13 +47,17 @@ import cn.edu.pku.wuliangliang.util.NetUtil;
  * Created by WLL on 2017/9/20.
  */
 
-public class MainActivity extends Activity implements View.OnClickListener{
+public class MainActivity extends Activity implements View.OnClickListener {
 
     private static final int UPDATE_TODAY_WEATHER = 1;
     private ImageView mUpdateBtn;
+    private ImageView mLocBtn;
+    private ImageView mShareBtn;
     private ImageView mCitySelectBtn;
     private TextView timeTv, weekTv, pm25Tv, pmQualityTv, temperatureTv, temperatureTodayTv, climateTv, windTv, cityNameTv;
     private ImageView weatherImage, pmImage;
+
+    private LocationManager locationManager;
 
     private Handler mHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -60,10 +76,14 @@ public class MainActivity extends Activity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.weather_info);
 
-        mUpdateBtn = (ImageView)findViewById(R.id.title_updateBtn);
+        mUpdateBtn = findViewById(R.id.title_updateBtn);
         mUpdateBtn.setOnClickListener(this);
-        mCitySelectBtn = (ImageView)findViewById(R.id.title_cityManager);
+        mCitySelectBtn = findViewById(R.id.title_cityManager);
         mCitySelectBtn.setOnClickListener(this);
+        mShareBtn = findViewById(R.id.title_share);
+        mShareBtn.setOnClickListener(this);
+        mLocBtn = findViewById(R.id.title_location);
+        mLocBtn.setOnClickListener(this);
 
         if (NetUtil.getNetworkState(this) != NetUtil.NETWORK_NONE) {
             SharedPreferences sharedPreferences = getSharedPreferences("config", MODE_PRIVATE);
@@ -77,6 +97,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         }
 
         initView();
+        getLoc();
     }
 
     void initView() {
@@ -109,6 +130,10 @@ public class MainActivity extends Activity implements View.OnClickListener{
             Intent i = new Intent(this, SelectCity.class);
 //            startActivity(i);
             startActivityForResult(i, 1);
+        }
+
+        if (view.getId() == R.id.title_location) {
+            getLoc();
         }
 
         if (view.getId() == R.id.title_updateBtn) {
@@ -156,7 +181,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 TodayWeather todayWeather = null;
                 try {
                     URL url = new URL(address);
-                    httpURLConnection = (HttpURLConnection)url.openConnection();
+                    httpURLConnection = (HttpURLConnection) url.openConnection();
                     httpURLConnection.setRequestMethod("GET");
                     httpURLConnection.setReadTimeout(4000);
                     httpURLConnection.setReadTimeout(4000);
@@ -236,7 +261,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
                                 todayWeather.setFengli(xmlPullParser.getText());
                                 fengliCount++;
                                 Log.d("llWeather_fengli", xmlPullParser.getText());
-                            }  else if (xmlPullParser.getName().equals("fengxiang") && fengxiangCount == 0) {
+                            } else if (xmlPullParser.getName().equals("fengxiang") && fengxiangCount == 0) {
                                 eventType = xmlPullParser.next();
                                 todayWeather.setFengxiang(xmlPullParser.getText());
                                 fengxiangCount++;
@@ -314,7 +339,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         temperatureTodayTv.setText(todayWeather.getLow().substring(2) + "~" + todayWeather.getHigh().substring(2));
 
         climateTv.setText(todayWeather.getType() + " · ");
-        switch (todayWeather.getType()){
+        switch (todayWeather.getType()) {
             case "暴雪":
                 weatherImage.setImageResource(R.drawable.biz_plugin_weather_baoxue);
                 break;
@@ -383,4 +408,69 @@ public class MainActivity extends Activity implements View.OnClickListener{
         Toast.makeText(MainActivity.this, "更新成功", Toast.LENGTH_LONG).show();
     }
 
+    private void getLoc() {
+
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+        Criteria criteria = new Criteria();
+        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+        criteria.setAltitudeRequired(false);
+        criteria.setBearingRequired(false);
+        criteria.setCostAllowed(true);
+        criteria.setPowerRequirement(Criteria.POWER_LOW);
+        String provider = locationManager.getBestProvider(criteria, false);
+        Log.d("llWeather_LocProvider", provider);
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+
+            if (provider == null || provider.equals("")) {
+                startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+            }
+
+            Location location = locationManager.getLastKnownLocation(provider);
+            if (location == null) {
+                locationManager.requestLocationUpdates(provider, 0, 0,
+                        locationListener);
+            }
+            updateLoc(location);
+        }
+    }
+
+    private final LocationListener locationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
+            updateLoc(location);
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+            Log.d("llWeather_LocInfo", "Provider now is enabled");
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+            updateLoc(null);
+            Log.d("llWeather_LocInfo", "Provider now is disabled");
+        }
+    };
+
+    private void updateLoc(Location location) {
+        String latLng;
+        if (location != null) {
+            double lat = location.getLatitude();
+            double lng = location.getLongitude();
+            latLng = "Latitude:" + lat + "  Longitude:" + lng;
+        } else {
+            latLng = "Can't access your location";
+        }
+
+        Log.d("llWeather_LocLatLng", latLng);
+    }
 }

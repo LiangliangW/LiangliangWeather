@@ -97,7 +97,7 @@ public class MyApplication extends Application {
             i++;
             String cityName = city.getCity();
             String cityCode = city.getNumber();
-            Log.d("llWeather_cityList", cityCode + " : " + cityName);
+//            Log.d("llWeather_cityList", cityCode + " : " + cityName);
         }
         Log.d("llWeather_cityListNum", "i = " + i);
         return true;

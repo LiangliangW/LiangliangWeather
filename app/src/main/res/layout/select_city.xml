@@ -33,10 +33,17 @@
             android:layout_height="match_parent"
             android:layout_toRightOf="@id/city_Seperator"
             android:gravity="center_vertical"
-            android:paddingLeft="5dip"
+            android:paddingLeft="10dip"
             android:text="当前城市：北京"
             android:textColor="#FFFFFF"
             android:textSize="22.0sp"/>
-
     </RelativeLayout>
+
+    <ListView
+        android:id="@+id/city_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/title">
+    </ListView>
+
 </RelativeLayout>

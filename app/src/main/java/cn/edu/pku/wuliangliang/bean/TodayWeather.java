@@ -107,7 +107,7 @@ public class TodayWeather {
     public String toString() {
         return "TodayWeather{" +
                 "city='" + city + '\'' +
-                ", updateTime='" + updateTime + '\'' +
+                ", updatetime='" + updateTime + '\'' +
                 ", wendu='" + wendu + '\'' +
                 ", pm25='" + pm25 + '\'' +
                 ", quality='" + quality + '\'' +

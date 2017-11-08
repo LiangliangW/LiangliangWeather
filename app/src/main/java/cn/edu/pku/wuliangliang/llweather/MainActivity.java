@@ -79,7 +79,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
             String cityCode = sharedPreferences.getString("main_city_code", "101010100");
             queryWeatherCode(cityCode);
             Log.d("llWeather_netConnection", "Yes");
-            Toast.makeText(MainActivity.this, "Network connected", Toast.LENGTH_LONG).show();
         } else {
             Log.d("llWeather_netConnection", "No");
             Toast.makeText(MainActivity.this, "Network unavalible", Toast.LENGTH_LONG).show();
@@ -142,7 +141,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
             System.arraycopy(mHints, 1, mHints, 0, mHints.length - 1);
             mHints[mHints.length - 1] = SystemClock.uptimeMillis();
             if (SystemClock.uptimeMillis() - mHints[0] < 1000) {
-                Toast.makeText(MainActivity.this, "触发彩蛋", Toast.LENGTH_LONG).show();
                 if (pm25OkFlag == false) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(this)
                             .setTitle("俍俍提醒")
@@ -183,6 +181,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
                                 }
                             });
                     builder.show();
+                } else {
+                    Toast.makeText(MainActivity.this, "晴天要有好心情！", Toast.LENGTH_LONG).show();
+
                 }
             }
         }
@@ -195,12 +196,17 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
             if (NetUtil.getNetworkState(this) != NetUtil.NETWORK_NONE) {
                 Log.d("llWeather_netConnection", "Yes");
-                queryWeatherCode(newCityCode);
+                if (newCityCode != "-1") {
+                    queryWeatherCode(newCityCode);
 
-                SharedPreferences settings = getSharedPreferences("config", MODE_PRIVATE);
-                SharedPreferences.Editor editor = settings.edit();
-                editor.putString("main_city_code", newCityCode);
-                editor.commit();
+                    SharedPreferences settings = getSharedPreferences("config", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putString("main_city_code", newCityCode);
+                    editor.commit();
+                } else {
+                    Toast.makeText(MainActivity.this, "城市选择失败", Toast.LENGTH_LONG).show();
+
+                }
             } else {
                 Log.d("llWeather_netConnection", "No");
                 Toast.makeText(MainActivity.this, "Network unavalible", Toast.LENGTH_LONG).show();

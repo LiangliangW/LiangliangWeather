@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 
-    package="cn.edu.pku.wulingliang.miniweather">
+    package="cn.edu.pku.wuliangliang.llweather">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -27,13 +27,13 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"></uses-permission>
 
     <application
+        android:name="cn.edu.pku.wuliangliang.app.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="LiangliangWeather"
-
+        android:label="LLWeather"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/Theme.AppCompat.NoActionBar">
 
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -46,9 +46,7 @@
 
 
         <service android:name="com.amap.api.location.APSService"></service>
-        <meta-data android:name="com.amap.api.v2.apikey" android:value="7f086687dc53cd68534ea891508f5a21"></meta-data>
+        <meta-data android:name="com.amap.api.v2.apikey" android:value="f3ce0a999558564634df99a6c41f468d"></meta-data>
     </application>
-
-
 
 </manifest>

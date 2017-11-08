@@ -9,9 +9,6 @@ import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.location.AMapLocationQualityReport;
 
-import cn.edu.pku.wuliangliang.util.Utils;
-import cn.edu.pku.wulingliang.miniweather.MainActivity;
-
 /**
  * Created by WLL on 2017/10/21.
  */
@@ -22,7 +19,6 @@ public class Location {
 
     /**
      * 初始化定位
-     *
      * @since 2.8.0
      *
      */
@@ -107,6 +103,7 @@ public class Location {
                 //解析定位结果，
                 String result = sb.toString();
                 Log.d("llWeather_LocResult", result);
+
             } else {
                 Log.d("llWeather_LocResult", "False");
             }

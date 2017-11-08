@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package cn.edu.pku.wuliangliang.util;
 
@@ -31,7 +31,7 @@ public class Utils {
 	 * 停止定位
 	 */
 	public final static int MSG_LOCATION_STOP= 2;
-	
+
 	public final static String KEY_URL = "URL";
 	public final static String URL_H5LOCATION = "file:///android_asset/location.html";
 	/**

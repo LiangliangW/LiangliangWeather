@@ -49,8 +49,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private Handler mHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
-                case UPDATE_TODAY_WEATHER:
-                    updateTodayWeather((TodayWeather) msg.obj);
+                case 1:
+                    TodayWeather[] todayWeathersList = (TodayWeather[]) msg.obj;
+                    TodayWeather todayWeather1 = todayWeathersList[0];
+                    TodayWeather todayWeather2 = todayWeathersList[1];
+                    updateTodayWeather(todayWeather1, todayWeather2);
                     break;
                 default:
                     break;
@@ -215,36 +218,63 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     private void queryWeatherCode(String cityCode) {
-        final String address = "http://wthrcdn.etouch.cn/WeatherApi?citykey=" + cityCode;
-        Log.d("llWeather_URL", address);
+        final String address1 = "http://wthrcdn.etouch.cn/WeatherApi?citykey=" + cityCode;
+        Log.d("llWeather_URL1", address1);
+
+        String cityCode2 = cityCode.substring(0, 5) + "0100";
+        final String address2 = "http://wthrcdn.etouch.cn/WeatherApi?citykey=" + cityCode2;
+        Log.d("llWeather_URL2", address2);
+
         new Thread(new Runnable() {
             @Override
             public void run() {
-                HttpURLConnection httpURLConnection = null;
-                TodayWeather todayWeather = null;
+                HttpURLConnection httpURLConnection1 = null;
+                HttpURLConnection httpURLConnection2 = null;
+                TodayWeather todayWeather1 = null;
+                TodayWeather todayWeather2 = null;
                 try {
-                    URL url = new URL(address);
-                    httpURLConnection = (HttpURLConnection) url.openConnection();
-                    httpURLConnection.setRequestMethod("GET");
-                    httpURLConnection.setReadTimeout(4000);
-                    httpURLConnection.setReadTimeout(4000);
-                    InputStream inputStream = httpURLConnection.getInputStream();
-                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                    StringBuilder response = new StringBuilder();
-                    String str;
-                    while ((str = bufferedReader.readLine()) != null) {
-                        response.append(str);
-                        Log.d("llWeather_str", str);
+                    URL url1 = new URL(address1);
+                    httpURLConnection1 = (HttpURLConnection) url1.openConnection();
+                    httpURLConnection1.setRequestMethod("GET");
+                    httpURLConnection1.setReadTimeout(4000);
+                    httpURLConnection1.setReadTimeout(4000);
+                    InputStream inputStream1 = httpURLConnection1.getInputStream();
+                    BufferedReader bufferedReader1 = new BufferedReader(new InputStreamReader(inputStream1));
+                    StringBuilder response1 = new StringBuilder();
+                    String str1;
+                    while ((str1 = bufferedReader1.readLine()) != null) {
+                        response1.append(str1);
+                        Log.d("llWeather_str1", str1);
                     }
-                    String responseStr = response.toString();
-                    Log.d("llWeather_responseStr", responseStr);
-                    todayWeather = parseXml(responseStr);
-                    if (todayWeather != null) {
-                        Log.d("llWeather_todayWeather", todayWeather.toString());
+                    String responseStr1 = response1.toString();
+                    Log.d("llWeather_responseStr1", responseStr1);
+                    todayWeather1 = parseXml(responseStr1);
 
+
+                    URL url2 = new URL(address2);
+                    httpURLConnection2 = (HttpURLConnection) url2.openConnection();
+                    httpURLConnection2.setRequestMethod("GET");
+                    httpURLConnection2.setReadTimeout(4000);
+                    httpURLConnection2.setReadTimeout(4000);
+                    InputStream inputStream2 = httpURLConnection2.getInputStream();
+                    BufferedReader bufferedReader2 = new BufferedReader(new InputStreamReader(inputStream2));
+                    StringBuilder response2 = new StringBuilder();
+                    String str2;
+                    while ((str2 = bufferedReader2.readLine()) != null) {
+                        response2.append(str2);
+                        Log.d("llWeather_str2", str2);
+                    }
+                    String responseStr2 = response2.toString();
+                    Log.d("llWeather_responseStr2", responseStr2);
+                    todayWeather2 = parseXmlPm25(responseStr2);
+
+                    TodayWeather[] todayWeathersList = {todayWeather1, todayWeather2};
+
+                    if (todayWeather1 != null && todayWeather2 != null) {
+                        Log.d("llWeather_todayWeather1", todayWeather1.toString());
                         Message msg = new Message();
-                        msg.what = UPDATE_TODAY_WEATHER;
-                        msg.obj = todayWeather;
+                        msg.what = 1;
+                        msg.obj = todayWeathersList;
                         mHandler.sendMessage(msg);
                     }
                 } catch (Exception e) {
@@ -254,8 +284,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
                         Toast.makeText(MainActivity.this, "Cannot connect wthrcdn.etouch.cn", Toast.LENGTH_LONG).show();
                     }
                 } finally {
-                    if (httpURLConnection != null) {
-                        httpURLConnection.disconnect();
+                    if (httpURLConnection1 != null) {
+                        httpURLConnection1.disconnect();
+                    }
+                    if (httpURLConnection2 != null) {
+                        httpURLConnection2.disconnect();
                     }
                 }
             }
@@ -275,7 +308,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             XmlPullParser xmlPullParser = xmlPullParserFactory.newPullParser();
             xmlPullParser.setInput(new StringReader(xmlData));
             int eventType = xmlPullParser.getEventType();
-            Log.d("llWeather_Loading", "parserXML");
+            Log.d("llWeather_Loading", "parserXml");
             while (eventType != XmlPullParser.END_DOCUMENT) {
                 switch (eventType) {
 
@@ -312,11 +345,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
                             } else if (xmlPullParser.getName().equals("pm25")) {
                                 eventType = xmlPullParser.next();
                                 todayWeather.setPm25(xmlPullParser.getText());
-                                Log.d("llWeather_pm25", xmlPullParser.getText());
+                                Log.d("llWeather_pm25_1", xmlPullParser.getText());
                             } else if (xmlPullParser.getName().equals("quality")) {
                                 eventType = xmlPullParser.next();
                                 todayWeather.setQuality(xmlPullParser.getText());
-                                Log.d("llWeather_quality", xmlPullParser.getText());
+                                Log.d("llWeather_quality_1", xmlPullParser.getText());
                             } else if (xmlPullParser.getName().equals("date") && dateCount == 0) {
                                 eventType = xmlPullParser.next();
                                 todayWeather.setDate(xmlPullParser.getText());
@@ -356,14 +389,60 @@ public class MainActivity extends Activity implements View.OnClickListener {
         return todayWeather;
     }
 
-    void updateTodayWeather(TodayWeather todayWeather) {
-        cityNameTv.setText(todayWeather.getCity());
-        timeTv.setText(todayWeather.getUpdateTime() + "发布");
-        temperatureTv.setText(todayWeather.getWendu() + "℃");
-        weekTv.setText(todayWeather.getDate());
+    private TodayWeather parseXmlPm25(String xmlData) {
+        TodayWeather todayWeather = null;
+        try {
+            XmlPullParserFactory xmlPullParserFactory = XmlPullParserFactory.newInstance();
+            XmlPullParser xmlPullParser = xmlPullParserFactory.newPullParser();
+            xmlPullParser.setInput(new StringReader(xmlData));
+            int eventType = xmlPullParser.getEventType();
+            Log.d("llWeather_Loading", "parserXmlPm25");
+            while (eventType != XmlPullParser.END_DOCUMENT) {
+                switch (eventType) {
 
-        pm25Tv.setText(todayWeather.getPm25());
-        int pm25 = Integer.parseInt(todayWeather.getPm25());
+                    case XmlPullParser.START_DOCUMENT:
+                        break;
+
+                    case XmlPullParser.START_TAG:
+                        if (xmlPullParser.getName().equals("resp")) {
+                            todayWeather = new TodayWeather();
+                        }
+                        if (todayWeather != null) {
+                            if (xmlPullParser.getName().equals("pm25")) {
+                                eventType = xmlPullParser.next();
+                                todayWeather.setPm25(xmlPullParser.getText());
+                                Log.d("llWeather_pm25_2", xmlPullParser.getText());
+                            } else if (xmlPullParser.getName().equals("quality")) {
+                                eventType = xmlPullParser.next();
+                                todayWeather.setQuality(xmlPullParser.getText());
+                                Log.d("llWeather_quality_2", xmlPullParser.getText());
+                            }
+                            break;
+                        }
+
+
+                    case XmlPullParser.END_TAG:
+                        break;
+                }
+                eventType = xmlPullParser.next();
+            }
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return todayWeather;
+    }
+
+    void updateTodayWeather(TodayWeather todayWeather1, TodayWeather todayWeather2) {
+        cityNameTv.setText(todayWeather1.getCity());
+        timeTv.setText(todayWeather1.getUpdateTime() + "发布");
+        temperatureTv.setText(todayWeather1.getWendu() + "℃");
+        weekTv.setText(todayWeather1.getDate());
+
+        pm25Tv.setText(todayWeather2.getPm25());
+        int pm25 = Integer.parseInt(todayWeather2.getPm25());
         if (pm25 <= 50) {
             pmImage.setImageResource(R.drawable.biz_plugin_weather_0_50);
             pm25OkFlag = true;
@@ -379,11 +458,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
             pmImage.setImageResource(R.drawable.biz_plugin_weather_greater_300);
         }
 
-        pmQualityTv.setText(todayWeather.getQuality());
-        temperatureTodayTv.setText(todayWeather.getLow().substring(2) + "~" + todayWeather.getHigh().substring(2));
+        pmQualityTv.setText(todayWeather2.getQuality());
+        temperatureTodayTv.setText(todayWeather1.getLow().substring(2) + "~" + todayWeather1.getHigh().substring(2));
 
-        climateTv.setText(todayWeather.getType() + " · ");
-        switch (todayWeather.getType()) {
+        climateTv.setText(todayWeather1.getType() + " · ");
+        switch (todayWeather1.getType()) {
             case "暴雪":
                 weatherImage.setImageResource(R.drawable.biz_plugin_weather_baoxue);
                 break;
@@ -448,7 +527,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 weatherImage.setImageResource(R.drawable.biz_plugin_weather_qing);
         }
 
-        windTv.setText(todayWeather.getFengli() + "风");
+        windTv.setText(todayWeather1.getFengli() + "风");
         Toast.makeText(MainActivity.this, "更新成功", Toast.LENGTH_LONG).show();
     }
 

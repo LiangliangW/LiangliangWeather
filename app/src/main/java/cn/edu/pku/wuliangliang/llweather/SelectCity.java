@@ -44,6 +44,10 @@ public class SelectCity extends Activity implements View.OnClickListener{
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(SelectCity.this, "你点击了" + mArrayList.get(position), Toast.LENGTH_SHORT).show();
                 updateCityCode = mCityList.get(position).getNumber();
+                Intent i = new Intent();
+                i.putExtra("cityCode", updateCityCode);
+                setResult(RESULT_OK, i);
+                finish();
             }
         });
 

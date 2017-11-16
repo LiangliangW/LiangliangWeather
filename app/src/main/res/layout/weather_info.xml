@@ -38,8 +38,16 @@
             android:textColor="#FFFFFF"
             android:textSize="22.0sp"/>
 
+        <ProgressBar
+            android:id="@+id/title_updateBtn_ing"
+            android:layout_width="45.0dp"
+            android:layout_height="45.0dp"
+            style="@style/title_update_progressbar_style"
+            android:layout_alignParentRight="true"
+            android:visibility="invisible" />
+
         <ImageView
-            android:id="@+id/title_updateBtn"
+            android:id="@+id/title_updateBtn_ed"
             android:layout_width="45.0dp"
             android:layout_height="45.0dp"
             android:layout_alignParentRight="true"
@@ -52,14 +60,14 @@
             android:layout_width="1.0dip"
             android:layout_height="40.0dip"
             android:layout_marginTop="2.0dip"
-            android:layout_toLeftOf="@+id/title_updateBtn"
+            android:layout_toLeftOf="@+id/title_updateBtn_ed"
             android:background="#22257c"/>
 
         <ImageView
             android:id="@+id/title_share"
             android:layout_width="45.0dp"
             android:layout_height="45.0dp"
-            android:layout_toLeftOf="@+id/title_updateBtn"
+            android:layout_toLeftOf="@+id/title_updateBtn_ed"
             android:src="@drawable/title_share_selector"/>
 
         <ImageView

@@ -12,6 +12,7 @@ import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,7 +38,8 @@ import cn.edu.pku.wuliangliang.util.NetUtil;
 public class MainActivity extends Activity implements View.OnClickListener {
 
     private static final int UPDATE_TODAY_WEATHER = 1;
-    private ImageView mUpdateBtn, mLocBtn, mShareBtn, mCitySelectBtn;
+    private ImageView mUpdateBtn_ed, mLocBtn, mShareBtn, mCitySelectBtn;
+    private ProgressBar mUpdateBtn_ing;
     private TextView timeTv, weekTv, pm25Tv, pmQualityTv, temperatureTv, temperatureTodayTv, climateTv, windTv, cityNameTv;
     private ImageView weatherImage, pmImage;
     private ImageView mFace;
@@ -67,8 +69,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.weather_info);
 
-        mUpdateBtn = findViewById(R.id.title_updateBtn);
-        mUpdateBtn.setOnClickListener(this);
+        mUpdateBtn_ed = findViewById(R.id.title_updateBtn_ed);
+        mUpdateBtn_ed.setOnClickListener(this);
+        mUpdateBtn_ing = findViewById(R.id.title_updateBtn_ing);
         mCitySelectBtn = findViewById(R.id.title_cityManager);
         mCitySelectBtn.setOnClickListener(this);
         mShareBtn = findViewById(R.id.title_share);
@@ -128,7 +131,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             getLoc();
         }
 
-        if (view.getId() == R.id.title_updateBtn) {
+        if (view.getId() == R.id.title_updateBtn_ed) {
             SharedPreferences sharedPreferences = getSharedPreferences("config", MODE_PRIVATE);
             String cityCode = sharedPreferences.getString("main_city_code", "101010100");
             Log.d("llWeather_cityCode", cityCode);
@@ -219,6 +222,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     private void queryWeatherCode(String cityCode) {
+        mUpdateBtn_ed.setVisibility(View.INVISIBLE);
+        mUpdateBtn_ing.setVisibility(View.VISIBLE);
+
         final String address1 = "http://wthrcdn.etouch.cn/WeatherApi?citykey=" + cityCode;
         Log.d("llWeather_URL1", address1);
 
@@ -326,6 +332,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 }
             }
         }).start();
+
+
     }
 
     private TodayWeather parseXml(String xmlData) {
@@ -589,6 +597,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
         } else {
             Toast.makeText(MainActivity.this, "对不起，无本地天气信息，请尝试搜索附近城市", Toast.LENGTH_SHORT).show();
         }
+
+        mUpdateBtn_ed.setVisibility(View.VISIBLE);
+        mUpdateBtn_ing.setVisibility(View.INVISIBLE);
     }
 
 

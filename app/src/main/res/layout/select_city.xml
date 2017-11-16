@@ -39,11 +39,51 @@
             android:textSize="22.0sp"/>
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/city_search"
+        android:layout_width="match_parent"
+        android:layout_height="60.0dp"
+        android:layout_below="@+id/title">
+
+        <!--  to acquire focus -->
+        <LinearLayout
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:layout_width="0px"
+            android:layout_height="0px"/>
+
+        <EditText
+            android:id="@+id/city_search_edit"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="请输入城市名称"
+            android:layout_margin="10.0dip"
+            android:drawableLeft="@drawable/magnifying_glass"
+            android:drawablePadding="8.0dip"
+            android:singleLine="true"
+            android:background="@drawable/contact_search_box_edittext_keyword_background"
+            android:textColor="#ff000000"
+            android:textColorHint="#ffcccccc"
+            android:textSize="15.0dip"
+            />
+
+        <ImageView
+            android:id="@+id/city_search_delete"
+            android:layout_width="25.0dp"
+            android:layout_height="25.0dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20.0dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/select_city_delete"
+            android:visibility="visible"/>
+
+    </RelativeLayout>
+
     <ListView
         android:id="@+id/city_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/title">
+        android:layout_below="@+id/city_search">
     </ListView>
 
 </RelativeLayout>

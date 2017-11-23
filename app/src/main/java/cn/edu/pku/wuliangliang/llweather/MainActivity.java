@@ -27,15 +27,19 @@ import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
+import cn.edu.pku.wuliangliang.app.MyApplication;
+import cn.edu.pku.wuliangliang.bean.City;
 import cn.edu.pku.wuliangliang.bean.TodayWeather;
 import cn.edu.pku.wuliangliang.util.NetUtil;
+import cn.edu.pku.wuliangliang.util.OnGetLocEventListener;
 
 /**
  * Created by WLL on 2017/9/20.
  */
 
-public class MainActivity extends Activity implements View.OnClickListener {
+public class MainActivity extends Activity implements View.OnClickListener{
 
     private static final int UPDATE_TODAY_WEATHER = 1;
     private ImageView mUpdateBtn_ed, mLocBtn, mShareBtn, mCitySelectBtn;
@@ -45,8 +49,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private ImageView mFace;
     private long[] mHints = new long[5];
     private boolean pm25OkFlag = false;
-
-    private cn.edu.pku.wuliangliang.util.Location location = new cn.edu.pku.wuliangliang.util.Location();
+    private MyApplication myApplication;
+    private List<City> mCityList;
+    private String locCityCode;
+    private cn.edu.pku.wuliangliang.util.Location mLocation = new cn.edu.pku.wuliangliang.util.Location();
 
     private Handler mHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -85,15 +91,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         if (NetUtil.getNetworkState(this) != NetUtil.NETWORK_NONE) {
             SharedPreferences sharedPreferences = getSharedPreferences("config", MODE_PRIVATE);
-            String cityCode = sharedPreferences.getString("main_city_code", "101010100");
+            String cityCode = sharedPreferences.getString("main_city_code", "101100101");
             queryWeatherCode(cityCode);
             Log.d("llWeather_netConnection", "Yes");
         } else {
             Log.d("llWeather_netConnection", "No");
             Toast.makeText(MainActivity.this, "Network unavalible", Toast.LENGTH_LONG).show();
         }
-
-        getLoc();
     }
 
     void initView() {
@@ -133,7 +137,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         if (view.getId() == R.id.title_updateBtn_ed) {
             SharedPreferences sharedPreferences = getSharedPreferences("config", MODE_PRIVATE);
-            String cityCode = sharedPreferences.getString("main_city_code", "101010100");
+            String cityCode = sharedPreferences.getString("main_city_code", "101100101");
             Log.d("llWeather_cityCode", cityCode);
 
             if (NetUtil.getNetworkState(this) != NetUtil.NETWORK_NONE) {
@@ -190,8 +194,45 @@ public class MainActivity extends Activity implements View.OnClickListener {
                             });
                     builder.show();
                 } else {
-                    Toast.makeText(MainActivity.this, "晴天要有好心情！", Toast.LENGTH_LONG).show();
-
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                            .setTitle("俍俍提醒")
+                            .setMessage("晴天要有好心情！")
+                            .setCancelable(false)
+                            .setPositiveButton("笑一个吧", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    pmImage.setImageResource(R.drawable.biz_plugin_weather_0_50);
+                                    try {
+                                        java.lang.reflect.Field field = dialog.getClass()
+                                                .getSuperclass().getDeclaredField("mShowing");
+                                        field.setAccessible(true);
+                                        field.set(dialog,true);
+                                        dialog.dismiss();
+                                    } catch (NoSuchFieldException e) {
+                                        e.printStackTrace();
+                                    } catch (IllegalAccessException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            })
+                            .setNegativeButton("心情不好", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    try {
+                                        java.lang.reflect.Field field = dialog.getClass()
+                                                .getSuperclass().getDeclaredField("mShowing");
+                                        field.setAccessible(true);
+                                        field.set(dialog,false);
+                                        dialog.dismiss();
+                                        Toast.makeText(MainActivity.this, "o(*￣3￣)o，该选项已被禁用，请重新选择", Toast.LENGTH_LONG).show();
+                                    } catch (NoSuchFieldException e) {
+                                        e.printStackTrace();
+                                    } catch (IllegalAccessException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+                    builder.show();
                 }
             }
         }
@@ -602,11 +643,45 @@ public class MainActivity extends Activity implements View.OnClickListener {
         mUpdateBtn_ing.setVisibility(View.INVISIBLE);
     }
 
-
-
-
-
     private void getLoc() {
-        location.startLocation(getApplicationContext());
+        mUpdateBtn_ed.setVisibility(View.INVISIBLE);
+        mUpdateBtn_ing.setVisibility(View.VISIBLE);
+
+        mLocation.startLocation(getApplicationContext());
+
+        mLocation.setOnGetLocEventListener(new OnGetLocEventListener() {
+            @Override
+            public void onGetLocEvent(String locCityName) {
+                Log.d("llWeather_LocCity_Main", locCityName);
+                String locOkName = locCityName.substring(0, locCityName.length() - 1);
+                Log.d("llWeather_LcCtOk_Main", locOkName);
+                myApplication = (MyApplication) getApplication();
+                mCityList = myApplication.getmCityList();
+                for (City city: mCityList) {
+//                    Log.d("llWeather_LcCtList", city.getCity());
+                    if (city.getCity().equals(locOkName)) {
+                        locCityCode = city.getNumber();
+                        break;
+                    }
+                }
+
+                if (locCityCode != null) {
+                    Log.d("llWeather_LcCtCode_Main", locCityCode);
+                    if (NetUtil.getNetworkState(getApplicationContext()) != NetUtil.NETWORK_NONE) {
+                        queryWeatherCode(locCityCode);
+                        SharedPreferences settings = getSharedPreferences("config", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = settings.edit();
+                        editor.putString("main_city_code", locCityCode);
+                        editor.commit();
+                    } else {
+                        Toast.makeText(MainActivity.this, "Network unavalible", Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    Toast.makeText(MainActivity.this, "定位失败，请重试", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        mUpdateBtn_ed.setVisibility(View.VISIBLE);
+        mUpdateBtn_ing.setVisibility(View.INVISIBLE);
     }
 }

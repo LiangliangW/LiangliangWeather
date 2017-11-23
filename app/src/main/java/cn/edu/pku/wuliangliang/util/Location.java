@@ -17,6 +17,24 @@ public class Location {
     private AMapLocationClient locationClient = null;
     private AMapLocationClientOption locationOption = null;
 
+    public String getLocCityName() {
+        return locCityName;
+    }
+
+    private String locCityName = "没取到";
+
+    private OnGetLocEventListener onGetLocEventListener;
+
+    public void setOnGetLocEventListener(OnGetLocEventListener onGetLocEventListener) {
+        this.onGetLocEventListener = onGetLocEventListener;
+    }
+
+    public void doCallBack() {
+        if (!locCityName.equals("没取到")) {
+            onGetLocEventListener.onGetLocEvent(locCityName);
+        }
+    }
+
     /**
      * 初始化定位
      * @since 2.8.0
@@ -103,6 +121,9 @@ public class Location {
                 //解析定位结果，
                 String result = sb.toString();
                 Log.d("llWeather_LocResult", result);
+                locCityName = location.getCity();
+                Log.d("llWeather_LocCity_Loc", locCityName);
+                doCallBack();
 
             } else {
                 Log.d("llWeather_LocResult", "False");
@@ -140,7 +161,6 @@ public class Location {
 
     /**
      * 开始定位
-     *
      * @since 2.8.0
      *
      */
@@ -155,7 +175,6 @@ public class Location {
 
     /**
      * 停止定位
-     *
      * @since 2.8.0
      *
      */
@@ -168,7 +187,6 @@ public class Location {
      * 销毁定位
      *
      * @since 2.8.0
-     * @author hongming.wang
      * TODO
      */
     private void destroyLocation(){

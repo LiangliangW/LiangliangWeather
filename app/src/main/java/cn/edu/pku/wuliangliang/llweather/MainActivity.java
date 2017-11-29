@@ -42,7 +42,7 @@ import cn.edu.pku.wuliangliang.util.OnGetLocEventListener;
 public class MainActivity extends Activity implements View.OnClickListener{
 
     private static final int UPDATE_TODAY_WEATHER = 1;
-    private ImageView mUpdateBtn_ed, mLocBtn, mShareBtn, mCitySelectBtn;
+    private ImageView mUpdateBtn_ed, mLocBtn, mLocIngBtn, mShareBtn, mCitySelectBtn;
     private ProgressBar mUpdateBtn_ing;
     private TextView timeTv, weekTv, pm25Tv, pmQualityTv, temperatureTv, temperatureTodayTv, climateTv, windTv, cityNameTv;
     private ImageView weatherImage, pmImage;
@@ -84,6 +84,8 @@ public class MainActivity extends Activity implements View.OnClickListener{
         mShareBtn.setOnClickListener(this);
         mLocBtn = findViewById(R.id.title_location);
         mLocBtn.setOnClickListener(this);
+        mLocIngBtn = findViewById(R.id.title_location_ing);
+        mLocIngBtn.setOnClickListener(this);
         mFace = findViewById(R.id.pm25_pic);
         mFace.setOnClickListener(this);
 
@@ -644,6 +646,8 @@ public class MainActivity extends Activity implements View.OnClickListener{
     }
 
     private void getLoc() {
+        mLocBtn.setVisibility(View.INVISIBLE);
+        mLocIngBtn.setVisibility(View.VISIBLE);
         mUpdateBtn_ed.setVisibility(View.INVISIBLE);
         mUpdateBtn_ing.setVisibility(View.VISIBLE);
 
@@ -683,5 +687,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         });
         mUpdateBtn_ed.setVisibility(View.VISIBLE);
         mUpdateBtn_ing.setVisibility(View.INVISIBLE);
+        mLocBtn.setVisibility(View.VISIBLE);
+        mLocIngBtn.setVisibility(View.INVISIBLE);
     }
 }

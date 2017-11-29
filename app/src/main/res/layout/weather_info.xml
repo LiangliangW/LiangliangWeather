@@ -83,7 +83,16 @@
             android:layout_width="45.0dp"
             android:layout_height="45.0dp"
             android:layout_toLeftOf="@+id/title_share"
-            android:src="@drawable/title_loc_selector"/>
+            android:src="@drawable/title_loc_selector"
+            android:visibility="visible"/>
+
+        <ImageView
+            android:id="@+id/title_location_ing"
+            android:layout_width="45.0dp"
+            android:layout_height="45.0dp"
+            android:layout_toLeftOf="@+id/title_share"
+            android:src="@drawable/base_action_bar_action_city"
+            android:visibility="invisible"/>
 
         <ImageView
             android:id="@+id/title_Seperator4"

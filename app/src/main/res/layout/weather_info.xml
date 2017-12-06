@@ -314,13 +314,13 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="星期一"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:textColor="@android:color/white"/>
 
                 <ImageView
                     android:id="@+id/type1Pic"
-                    android:layout_width="85dp"
-                    android:layout_height="85dp"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
                     android:layout_gravity="center"
                     android:src="@drawable/biz_plugin_weather_qing"/>
 
@@ -330,7 +330,7 @@
                     android:layout_height="wrap_content"
                     android:text="0℃~3℃"
                     android:layout_gravity="center"
-                    android:textSize="23sp"
+                    android:textSize="20sp"
                     android:textColor="@android:color/white"/>
 
                 <TextView
@@ -339,7 +339,7 @@
                     android:layout_height="wrap_content"
                     android:text="晴"
                     android:layout_gravity="center"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:textColor="@android:color/white"/>
 
                 <TextView
@@ -348,7 +348,7 @@
                     android:layout_height="wrap_content"
                     android:text="微风"
                     android:layout_gravity="center"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:textColor="@android:color/white"/>
             </LinearLayout>
 
@@ -365,13 +365,13 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="星期二"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:textColor="@android:color/white"/>
 
                 <ImageView
                     android:id="@+id/type2Pic"
-                    android:layout_width="85dp"
-                    android:layout_height="85dp"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
                     android:layout_gravity="center"
                     android:src="@drawable/biz_plugin_weather_qing"/>
 
@@ -381,7 +381,7 @@
                     android:layout_height="wrap_content"
                     android:text="0℃~3℃"
                     android:layout_gravity="center"
-                    android:textSize="23sp"
+                    android:textSize="20sp"
                     android:textColor="@android:color/white"/>
 
                 <TextView
@@ -390,7 +390,7 @@
                     android:layout_height="wrap_content"
                     android:text="晴"
                     android:layout_gravity="center"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:textColor="@android:color/white"/>
 
                 <TextView
@@ -399,7 +399,7 @@
                     android:layout_height="wrap_content"
                     android:text="微风"
                     android:layout_gravity="center"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:textColor="@android:color/white"/>
             </LinearLayout>
 
@@ -414,13 +414,13 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="星期三"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:textColor="@android:color/white"/>
 
                 <ImageView
                     android:id="@+id/type3Pic"
-                    android:layout_width="85dp"
-                    android:layout_height="85dp"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
                     android:layout_gravity="center"
                     android:src="@drawable/biz_plugin_weather_qing"/>
 
@@ -430,7 +430,7 @@
                     android:layout_height="wrap_content"
                     android:text="0℃~3℃"
                     android:layout_gravity="center"
-                    android:textSize="23sp"
+                    android:textSize="20sp"
                     android:textColor="@android:color/white"/>
 
                 <TextView
@@ -439,7 +439,7 @@
                     android:layout_height="wrap_content"
                     android:text="晴"
                     android:layout_gravity="center"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:textColor="@android:color/white"/>
 
                 <TextView
@@ -448,7 +448,7 @@
                     android:layout_height="wrap_content"
                     android:text="微风"
                     android:layout_gravity="center"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:textColor="@android:color/white"/>
             </LinearLayout>
 

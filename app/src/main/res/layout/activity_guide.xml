@@ -16,7 +16,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
-        android:gravity="center_horizontal">
+        android:gravity="center_horizontal"
+        android:id="@+id/linearLayout">
 
         <ImageView
             android:id="@+id/imageView1"
@@ -46,8 +47,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="开启天气预报"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:visibility="invisible"/>
+        android:visibility="invisible"
+        android:layout_above="@+id/linearLayout"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

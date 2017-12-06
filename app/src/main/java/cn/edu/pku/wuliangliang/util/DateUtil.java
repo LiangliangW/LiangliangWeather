@@ -2,6 +2,7 @@ package cn.edu.pku.wuliangliang.util;
 
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -94,6 +95,7 @@ public class DateUtil {
                     date.setLunarDay(data.getInt("lunarDay"));
                     date.setAnimal(data.getString("animal"));
                     date.setLeap(data.getBoolean("leap"));
+                    Log.d("llWeather_keys", data.keys().toString());
                 }
             }
 

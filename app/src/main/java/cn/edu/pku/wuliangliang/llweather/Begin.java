@@ -26,7 +26,7 @@ import cn.edu.pku.wuliangliang.bean.Date;
  * Created by WLL on 2017/12/6.
  */
 
-public class Begin extends AppCompatActivity {
+public class Begin extends AppCompatActivity{
 
     private final String addressDate = "http://www.sojson.com/open/api/lunar/json.shtml";
     private TextView begin_date, begin_title;
@@ -37,7 +37,7 @@ public class Begin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_begin);
 
-        int waitTime = 5000;
+        int waitTime = 2000;
         Handler handler1 = new Handler();
 
         SharedPreferences sharedPreferences = getSharedPreferences("openTime", MODE_PRIVATE);
@@ -73,6 +73,7 @@ public class Begin extends AppCompatActivity {
                 case 2:
                     Date mDate;
                     mDate = (Date) msg.obj;
+
                     updateDate(mDate);
                     break;
                 default:

@@ -3,11 +3,27 @@
     android:id="@+id/begin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/begin">
+    android:background="#000000">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/moon"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:src="@drawable/moon"/>
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="300dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/moon"
+            android:src="@drawable/poem"/>
 
         <TextView
             android:id="@+id/begin_date"
@@ -16,20 +32,23 @@
             android:layout_alignParentBottom="true"
             android:gravity="center"
             android:text="日期"
-            android:textColor="#ff000000"/>
+            android:visibility="invisible"
+            android:textColor="#fafafa"/>
 
         <TextView
             android:id="@+id/begin_title"
             android:background="#ffffff"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="50dp"
             android:gravity="center"
             android:text="豆豆咕咚咚生日快乐！"
             android:textSize="30sp"
             android:typeface="sans"
             android:textColor="#ff000000"
-            android:visibility="invisible"/>
+            android:visibility="invisible"
+            android:layout_above="@+id/begin_date"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
     </RelativeLayout>
 </RelativeLayout>

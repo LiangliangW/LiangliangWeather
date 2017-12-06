@@ -1,6 +1,7 @@
 package cn.edu.pku.wuliangliang.llweather;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -37,14 +38,27 @@ public class Begin extends AppCompatActivity {
         setContentView(R.layout.activity_begin);
 
         int waitTime = 5000;
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                startActivity(new Intent(Begin.this, MainActivity.class));
-                Begin.this.finish();
-            }
-        }, waitTime);
+        Handler handler1 = new Handler();
+
+        SharedPreferences sharedPreferences = getSharedPreferences("openTime", MODE_PRIVATE);
+        Boolean hasOpened = sharedPreferences.getBoolean("hasOpened", false);
+        if (hasOpened == false) {
+            handler1.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startActivity(new Intent(Begin.this, Guide.class));
+                    Begin.this.finish();
+                }
+            }, waitTime);
+        } else {
+            handler1.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startActivity(new Intent(Begin.this, MainActivity.class));
+                    Begin.this.finish();
+                }
+            }, waitTime);
+        }
 
         begin_date = (TextView) findViewById(R.id.begin_date);
         begin_title = (TextView) findViewById(R.id.begin_title);
@@ -68,7 +82,6 @@ public class Begin extends AppCompatActivity {
     };
 
     public void getDate() {
-
         new Thread(new Runnable() {
             @Override
             public void run() {

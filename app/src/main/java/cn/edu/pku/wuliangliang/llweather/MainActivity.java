@@ -5,11 +5,16 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -21,6 +26,9 @@ import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -57,6 +65,12 @@ public class MainActivity extends Activity implements View.OnClickListener{
     private List<City> mCityList;
     private String locCityCode;
     private cn.edu.pku.wuliangliang.util.Location mLocation = new cn.edu.pku.wuliangliang.util.Location();
+    // 获取内置SD卡路径
+    String sdCardPath = Environment.getExternalStorageDirectory().getAbsolutePath();
+    // 图片文件路径
+    String dirPath = sdCardPath + File.separator + "LLWeather";
+    String imagePath = dirPath + File.separator + "WeChatShare_image.png";
+    String imageName = "WeChatShare_image.png";
 
     private Handler mHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -186,6 +200,11 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 Log.d("llWeather_clickNet", "No");
                 Toast.makeText(MainActivity.this, "Network unavalible", Toast.LENGTH_LONG).show();
             }
+        }
+
+        if (view.getId() == R.id.title_share) {
+            saveBitmapToFile(shotActivityNoBar(this));
+            share(imagePath);
         }
 
         if (view.getId() == R.id.pm25_pic) {
@@ -1012,5 +1031,67 @@ public class MainActivity extends Activity implements View.OnClickListener{
         mUpdateBtn_ing.setVisibility(View.INVISIBLE);
         mLocBtn.setVisibility(View.VISIBLE);
         mLocIngBtn.setVisibility(View.INVISIBLE);
+    }
+
+    public Bitmap shotActivityNoBar(Activity activity) {
+        // 获取windows中最顶层的view
+        View view = activity.getWindow().getDecorView();
+        view.buildDrawingCache();
+
+        // 获取状态栏高度
+        Rect rect = new Rect();
+        view.getWindowVisibleDisplayFrame(rect);
+        int statusBarHeights = rect.top;
+        Display display = activity.getWindowManager().getDefaultDisplay();
+
+        // 获取屏幕宽和高
+        int widths = display.getWidth();
+        int heights = display.getHeight();
+
+        // 允许当前窗口保存缓存信息
+        view.setDrawingCacheEnabled(true);
+
+        // 去掉状态栏
+        Bitmap bmp = Bitmap.createBitmap(view.getDrawingCache(), 0,
+                statusBarHeights, widths, heights - statusBarHeights);
+
+        // 销毁缓存信息
+        view.destroyDrawingCache();
+
+        return bmp;
+    }
+
+    public void saveBitmapToFile(Bitmap bitmap) {
+        if (bitmap == null) return;
+
+        try {
+            File dir = new File(dirPath);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+
+            File f = new File(dir, imageName);
+            f.createNewFile();
+            FileOutputStream fOut = new FileOutputStream(f);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, fOut);
+            fOut.flush();
+            fOut.close();
+            Toast.makeText(this, "截屏文件已保存至" + imagePath, Toast.LENGTH_LONG).show();
+        } catch (FileNotFoundException e) {
+            Log.i("ScreenShotUtil", "保存失败");
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void share(String filePath) {
+        File file = new File(filePath);
+
+        Intent intent  = new Intent(Intent.ACTION_SEND); // 启动分享发送的属性
+        intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));// 分享的内容
+        intent.setType("image/*");// 分享发送的数据类型
+        Intent chooser = Intent.createChooser(intent, "Share screen shot");
+        startActivity(chooser);
     }
 }
